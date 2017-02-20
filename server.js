@@ -1,10 +1,12 @@
-const net = require('net');
+const http = require('http');
 
 var clients = [];
-var port = process.env.SOCKETSOUNDS_PORT || 5000;
+var port = process.env.PORT || 5000;
+var port = process.env.KEY;
 
-var server = net.createServer(function (socket) {
-  socket.name = socket.remoteAddress.replace(/^.*:/, '') + ":" + socket.remotePort;
+var server = http.createServer((req, res) => {
+
+  var name = socket.remoteAddress.replace(/^.*:/, '') + ":" + socket.remotePort;
   clients.push(socket);
   console.log("Connected: " + socket.name);
 

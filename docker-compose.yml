@@ -1,12 +1,13 @@
 version: '2'
 
 services:
-  socketsounds:
+  server:
     image: node:6
-    entrypoint: node /usr/src/app/server.js
+    entrypoint: node /usr/src/app/server2.js
     ports:
       - "5000:5000"
     environment:
       PORT: 5000
+      KEY: jhgasdkjfhgsdkjfhgsdkfjhg
     volumes:
       - .:/usr/src/app
