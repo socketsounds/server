@@ -1,40 +1,17 @@
 const http = require('http');
+const socketio = require('socket.io');
 
 var clients = [];
 var port = process.env.PORT || 5000;
-var port = process.env.KEY;
+var key = process.env.KEY;
 
-var server = http.createServer((req, res) => {
+var server = new socketio();
 
-  var name = socket.remoteAddress.replace(/^.*:/, '') + ":" + socket.remotePort;
-  clients.push(socket);
-  console.log("Connected: " + socket.name);
+server.on('connection', (client) => {
+  console.log("Exiting.");
+});
 
-  // Handle incoming messages.
-  socket.on('data', function (data) {
-    if (data instanceof Buffer) {
-      data = data.toString();
-    }
-    data = data.trim();
-    if (found = data.match(/^play ([a-zA-Z0-9]+)$/)) {
-      broadcast(data);
-      console.log("Play " + found[1] + " by " + socket.name);
-    }
-  });
-
-  // Handle client disconnect.
-  socket.on('end', function () {
-    clients.splice(clients.indexOf(socket), 1);
-    console.log(socket.name + " disconnected.");
-  });
-
-  // Send a message to all clients.
-  function broadcast(message, sender) {
-    clients.forEach(function (client) {
-      client.write(message);
-    });
-  }
-}).listen(port);
+server.listen(port);
 
 // Handle ctrl-c.
 process.on('SIGINT', function () {
