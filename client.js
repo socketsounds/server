@@ -1,10 +1,9 @@
-var serverUrl = "ws://localhost:5000";
-var soundsUrl = "http://home.caseyfulton.com/sounds/";
+// var serverUrl = "ws://localhost:5000";
+// var soundsUrl = "http://home.caseyfulton.com/sounds/";
 
-// debugger;
 var socket = new WebSocket(serverUrl);
-socket.onmessage = function(data) {
-  data = data.trim();
+socket.onmessage = (message) => {
+  data = message.data.trim();
   console.log("Received: " + data);
   if (found = data.match(/^play ([a-zA-Z0-9]+)$/)) {
     playSound(found[1]);

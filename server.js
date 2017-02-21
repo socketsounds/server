@@ -1,21 +1,38 @@
-const http = require('http');
-const socketio = require('socket.io');
+const WebSocket = require('ws');
 
-var clients = [];
 var port = process.env.PORT || 5000;
 var key = process.env.KEY;
 
-var server = new socketio();
+const server = new WebSocket.Server({ port: port });
 
-server.on('connection', (client) => {
-  console.log("Exiting.");
+server.on('connection', (socket) => {
+  socket.name = socket._socket.remoteAddress.replace(/^.*:/, '') +
+    ':' + socket._socket.remotePort;
+  console.log('Connected: ' + socket.name);
+
+  socket.on('message', (message) => {
+    message = message.trim();
+
+    // Match 'play blah' messages.
+    if (found = message.match(/^play ([a-zA-Z0-9]+)$/)) {
+      server.broadcast(message);
+      console.log("Play: " + found[1] + " by " + socket.name);
+    }
+  });
 });
 
-server.listen(port);
+// Broadcast to all.
+server.broadcast = function broadcast(data) {
+  server.clients.forEach((client) => {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(data);
+    }
+  });
+};
 
 // Handle ctrl-c.
-process.on('SIGINT', function () {
-  server.close(function () {
+process.on('SIGINT', () => {
+  server.close(() => {
     console.log("Exiting.");
     process.exit(0);
   });
