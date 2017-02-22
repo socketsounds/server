@@ -1,10 +1,11 @@
 // Fetch sounds list by scraping directory index of soundsUrl.
 $.get(soundsUrl, (html) => {
   var sounds = [];
+  var self = this;
 
   // Find all sounds in sounds index.
-  $(html).find('a[href$=".mp3"]').each(() => {
-    sounds.push($(this).text().replace(/\.[^/.]+$/, ''));
+  $(html).find('a[href$=".mp3"]').each((index, soundLink) => {
+    sounds.push(soundLink.text.replace(/\.[^/.]+$/, ''));
   });
 
   // Generate buttons for sounds.
@@ -18,8 +19,7 @@ $.get(soundsUrl, (html) => {
   });
 
   // Attach sound request to click event of each button.
-  $('.sound-button').click(() => {
-    var sound = $(this).data('sound');
-    requestSound(sound);
+  $('.sound-button').click((event) => {
+    requestSound($(event.target).data('sound'));
   });
 });
