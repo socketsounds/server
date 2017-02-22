@@ -1,8 +1,6 @@
 const WebSocket = require('ws');
 
 var port = process.env.PORT || 5000;
-var key = process.env.KEY;
-
 const server = new WebSocket.Server({ port: port });
 
 server.on('connection', (socket) => {
