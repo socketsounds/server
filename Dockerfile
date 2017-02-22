@@ -1,2 +1,2 @@
-FROM node:6-onbuild
+FROM caseyfw/node:alpine-onbuild
 EXPOSE 5000
